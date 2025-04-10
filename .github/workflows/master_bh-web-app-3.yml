@@ -88,4 +88,12 @@ jobs:
         id: deploy-to-webapp
         uses: azure/webapps-deploy@v3
         with:
-          app-name: 'BH
+          app-name: 'BH-Web-App-3'
+          slot-name: 'Production'
+          package: .
+
+      - name: Azure SQL Deploy
+        uses: Azure/sql-action@v2
+        with:
+          connection-string: ${{ secrets.SQL_CONNECTION_STRING }}
+          path: ${{ github.workspace }}/sql/sql-script.sql
