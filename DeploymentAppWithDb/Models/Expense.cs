@@ -29,5 +29,6 @@ namespace DeploymentAppWithDb.Models
         // User ID
         public int UserID { get; set; }
 
+        public string VendorName { get; set; }
     }
 }
