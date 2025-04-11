@@ -46,8 +46,7 @@ jobs:
             dotnet tool install dotnet-ef
 
       - name: Generate EF Core Migration Script
-        run: |
-			      dotnet ef migrations script --idempotent --project ./DeploymentAppWithDb/DeploymentAppWithDb.csproj  --output ./sql-script.sql        
+        run: dotnet ef migrations script --idempotent --project ./DeploymentAppWithDb/DeploymentAppWithDb.csproj  --output ./sql-script.sql        
          
       - name: Upload migration SQL script
         uses: actions/upload-artifact@v4
