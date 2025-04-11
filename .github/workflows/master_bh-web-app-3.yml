@@ -31,21 +31,25 @@ jobs:
 
       - name: dotnet publish
         run: dotnet publish -c Release -o ${{env.DOTNET_ROOT}}/myapp
-
-      - name: Install EntityFrameworkCore Tools
-        run: |
-            dotnet new tool-manifest
-            dotnet tool install dotnet-ef
-
-      - name: Generate EF Core Migration Script
-        run: dotnet ef migrations script --idempotent --no-build --configuration Release --output ./sql-script.sql --context DeploymentAppWithDb.Data.ProjectContext --project ./DeploymentAppWithDb/DeploymentAppWithDb.csproj
-
-      - name: Upload artifact for deployment job
+		
+	  - name: Upload artifact for deployment job
         uses: actions/upload-artifact@v4
         with:
           name: .net-app
           path: ${{env.DOTNET_ROOT}}/myapp
 
+
+
+      - name: Install EF Tools
+		run: dotnet tool install --global dotnet-ef
+
+      - name: Generate EF Core Migration Script
+        run: |
+			dotnet ef migrations script --idempotent \
+			  --project ./DeploymentAppWithDb/DeploymentAppWithDb.csproj \
+			  --output ./sql-script.sql
+        
+      
       - name: Upload migration SQL script
         uses: actions/upload-artifact@v4
         with:
@@ -94,3 +98,4 @@ jobs:
         with:
           connection-string: ${{ secrets.SQL_CONNECTION_STRING }}
           path: ./sql-script.sql
+          
